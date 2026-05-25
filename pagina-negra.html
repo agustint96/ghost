@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Página</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        background-color: #000000;
+        width: 100%;
+        height: 5000px;
+        overflow-x: hidden;
+      }
+
+      /* ── Wrapper ── */
+      .fantasma-wrapper {
+        position: fixed;
+        left: -280px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        opacity: 0;
+
+        transition:
+          left 1.8s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 1.2s ease;
+      }
+
+      .fantasma-wrapper.visible {
+        left: -70px;
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .fantasma-wrapper.ocultando {
+        left: -280px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* ── Fantasma ── */
+      .fantasma {
+        width: 250px;
+        display: block;
+        transform: rotate(-330deg);
+        animation: none;
+      }
+
+      .fantasma-wrapper.visible .fantasma {
+        animation: flotar 3s ease-in-out infinite;
+      }
+
+      @keyframes flotar {
+        0% {
+          transform: rotate(-330deg) translateX(0px) translateY(0px);
+        }
+        50% {
+          transform: rotate(-332deg) translateX(6px) translateY(-8px);
+        }
+        100% {
+          transform: rotate(-330deg) translateX(0px) translateY(0px);
+        }
+      }
+
+      /* ── Burbuja de diálogo ── */
+      .dialogo {
+        position: absolute;
+        left: calc(100% - 80px);
+        top: 30%;
+
+        width: 210px;
+
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-60%) scale(0.85);
+        transition:
+          opacity 0.25s ease,
+          transform 0.25s ease;
+      }
+
+      .dialogo img.globo {
+        width: 100%;
+        display: block;
+        mix-blend-mode: screen;
+        pointer-events: none;
+      }
+
+      .dialogo .contenido {
+        position: absolute;
+        top: 36%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: 70%;
+        text-align: center;
+
+        font-family: "Georgia", serif;
+        color: #2a2a2a;
+        line-height: 1.35;
+        font-size: 7px;
+      }
+
+      .dialogo .label {
+        display: block;
+        font-size: 10px;
+        font-weight: 400;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #666;
+        margin-bottom: 2px;
+        padding: 0.4rem 2rem 0.4rem;
+        margin-top: 3rem;
+      }
+
+      .dialogo a {
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        color: #222;
+        text-decoration: none;
+        word-break: break-all;
+      }
+
+      .dialogo a:hover {
+        color: #000;
+        text-decoration: underline;
+      }
+
+      /* Mostrar al hacer hover */
+      .fantasma-wrapper:hover .dialogo {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(-60%) scale(1);
+      }
+
+      /* ── MÓVIL ── */
+      @media (max-width: 480px) {
+        .fantasma-wrapper {
+          left: -140px;
+        }
+
+        .fantasma-wrapper.visible {
+          left: -38px;
+        }
+
+        .fantasma-wrapper.ocultando {
+          left: -140px;
+        }
+
+        .fantasma {
+          width: 120px;
+        }
+
+        .dialogo {
+          width: 100px;
+          left: calc(100% - 38px);
+          top: 28%;
+        }
+
+        .dialogo .label {
+          font-size: 5px;
+          padding: 0.2rem 0.8rem;
+          margin-top: 1.2rem;
+          letter-spacing: 0.08em;
+        }
+
+        .dialogo a {
+          font-size: 5px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="fantasma-wrapper">
+      <img class="fantasma" src="fantasma_transparante.png" alt="fantasma" />
+
+      <div class="dialogo">
+        <img class="globo" src="globo.png" alt="" />
+        <div class="contenido">
+          <span class="label">
+            Visit <br />
+            my
+            <a
+              href="https://github.com/agustint96"
+              target="_blank"
+              rel="noopener"
+            >
+              github.com/agustint96
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const wrapper = document.querySelector(".fantasma-wrapper");
+
+      let aparecio = false;
+
+      window.addEventListener("scroll", () => {
+        const scroll = window.scrollY;
+
+        if (scroll > 700 && !aparecio) {
+          aparecio = true;
+
+          wrapper.classList.add("visible");
+          wrapper.classList.remove("ocultando");
+
+          setTimeout(() => {
+            wrapper.classList.remove("visible");
+            wrapper.classList.add("ocultando");
+
+            setTimeout(() => {
+              aparecio = false;
+            }, 2500);
+          }, 5000);
+        }
+      });
+    </script>
+  </body>
+</html>
